@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>glassz13 / journal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;color:#fff;font-family:'Georgia',serif;}
+.site{background:#000;color:#fff;min-height:100vh;overflow-x:hidden;position:relative;}
+canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.everything{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
+
+.header{width:100%;padding:20px 0 0;text-align:center;}
+.site-name{font-size:11px;letter-spacing:0.22em;color:#00ff88;font-family:monospace;text-transform:uppercase;cursor:pointer;}
+.nav{display:flex;gap:28px;justify-content:center;margin-top:8px;}
+.nav a{font-size:12px;color:#00cc66;text-decoration:none;letter-spacing:0.08em;font-family:monospace;}
+.nav a:hover{color:#00ff88;}
+.nav-line{width:100%;height:0.5px;background:#0a1a0a;margin-top:16px;}
+
+.hero{width:100%;max-width:680px;padding:20px 40px 22px;display:flex;align-items:center;gap:22px;border-bottom:0.5px solid #0a1a0a;}
+.pfp{width:72px;height:72px;border-radius:50%;background:#000;border:1.5px solid #00ff88;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.pfp img{width:100%;height:100%;object-fit:cover;}
+.hero-text h1{font-size:20px;color:#fff;font-weight:normal;letter-spacing:0.02em;margin-bottom:5px;}
+.hero-text p{font-size:11px;color:#666;line-height:1.8;font-family:monospace;max-width:480px;}
+
+.main{width:100%;max-width:680px;display:grid;grid-template-columns:148px 1fr;width:100%;}
+.sidebar{border-right:0.5px solid #0a1a0a;padding:20px 0;}
+.sidebar-label{font-size:9px;letter-spacing:0.22em;color:#00aa44;font-family:monospace;padding:0 18px 10px;text-transform:uppercase;}
+.topic{padding:7px 18px;font-size:12px;color:#444;font-family:monospace;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;display:flex;justify-content:space-between;align-items:center;}
+.topic:hover{color:#fff;border-left-color:#00ff88;background:rgba(0,255,136,0.04);}
+.topic.active{color:#00ff88;border-left-color:#00ff88;background:rgba(0,255,136,0.05);}
+.topic-count{font-size:9px;color:#333;}
+.topic.active .topic-count{color:#00aa44;}
+
+.content{padding:20px 26px;}
+.content-label{font-size:9px;letter-spacing:0.22em;color:#00aa44;font-family:monospace;margin-bottom:14px;text-transform:uppercase;}
+.article-card{border-bottom:0.5px solid #0d0d0d;padding:11px 0;cursor:pointer;position:relative;}
+.article-card:last-of-type{border-bottom:none;}
+.article-card:hover .article-title{color:#00ff88;}
+.article-title{font-size:14px;color:#fff;margin-bottom:3px;transition:color 0.15s;}
+.article-meta{font-size:10px;color:#333;font-family:monospace;}
+.article-meta span{color:#00aa44;}
+
+.add-btn{display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:5px 12px;border:0.5px solid #00ff88;color:#00ff88;font-size:11px;font-family:monospace;cursor:pointer;background:transparent;border-radius:3px;letter-spacing:0.05em;}
+.add-btn:hover{background:rgba(0,255,136,0.07);}
+
+.reader-view{display:none;width:100%;max-width:640px;padding:30px 20px;}
+.reader-back{font-size:11px;font-family:monospace;color:#00cc66;text-decoration:none;cursor:pointer;display:inline-block;margin-bottom:20px;}
+.reader-header h1{font-size:24px;font-weight:normal;margin-bottom:10px;color:#fff;}
+.reader-meta{font-size:11px;font-family:monospace;color:#555;margin-bottom:20px;display:flex;gap:10px;}
+.reader-meta span{color:#00ff88;}
+.reader-img{width:100%;max-height:320px;object-fit:cover;border:0.5px solid #1a1a1a;border-radius:4px;margin-bottom:24px;display:none;}
+.reader-body{font-size:15px;line-height:1.75;color:#ccc;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;}
+.reader-actions{margin-top:40px;border-top:0.5px solid #0a1a0a;padding-top:15px;display:flex;gap:15px;}
+.action-link{font-size:11px;font-family:monospace;cursor:pointer;background:none;border:none;}
+.action-edit{color:#00ff88;}
+.action-delete{color:#ff4444;}
+
+.editor-view{display:none;position:fixed;inset:0;background:#030905;z-index:100;flex-direction:column;padding:30px 40px;box-sizing:border-box;}
+.editor-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:0.5px solid #0a2a12;padding-bottom:15px;}
+.editor-title-input{background:transparent;border:none;color:#00ff88;font-family:'Georgia',serif;font-size:22px;width:55%;outline:none;padding:5px 0;}
+.editor-title-input::placeholder{color:#003311;}
+.editor-meta-selects{display:flex;gap:12px;align-items:center;}
+.editor-select, .file-label{background:#000;border:0.5px solid #00aa44;color:#00ff88;font-family:monospace;font-size:10px;padding:5px 10px;border-radius:3px;outline:none;cursor:pointer;}
+.file-input{display:none;}
+.file-label{cursor:pointer;}
+.editor-textarea-wrapper{flex:1;display:flex;align-items:flex-start;justify-content:center;min-height:0;padding:10px 0;width:100%;}
+.editor-textarea{width:100%;max-width:800px;height:450px;background:transparent;border:0.5px solid #0a2a12;border-radius:6px;color:#00dd66;font-family:monospace;font-size:14px;line-height:1.8;resize:vertical;outline:none;padding:20px;transition:height 0.2s;word-wrap:break-word;overflow-wrap:break-word;white-space:pre-wrap;}
+.editor-textarea:focus{border-color:#00ff88;}
+.editor-footer{display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid #0a2a12;padding-top:15px;margin-top:10px;}
+.editor-counter{font-family:monospace;font-size:11px;color:#005522;}
+.editor-btns{display:flex;gap:12px;}
+.editor-btn{background:transparent;font-family:monospace;font-size:11px;padding:6px 18px;border-radius:3px;cursor:pointer;}
+.btn-save-post{border:0.5px solid #00ff88;color:#00ff88;}
+.btn-save-post:hover{background:rgba(0,255,136,0.1);}
+.btn-close-writer{border:0.5px solid #555;color:#555;}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;align-items:center;justify-content:center;}
+.modal-bg.show{display:flex;}
+.modal{background:#040a06;border:0.5px solid #00ff88;border-radius:6px;padding:28px 32px;width:270px;text-align:center;}
+.modal h3{font-size:14px;color:#fff;font-weight:normal;margin-bottom:4px;}
+.modal p{font-size:11px;color:#444;font-family:monospace;margin-bottom:16px;}
+.modal input{width:100%;background:#000;border:0.5px solid #0a2a12;color:#00ff88;font-family:monospace;font-size:13px;padding:8px 10px;border-radius:3px;text-align:center;letter-spacing:0.1em;outline:none;}
+.modal input:focus{border-color:#00ff88;}
+.modal-btns{display:flex;gap:10px;margin-top:14px;}
+.modal-btns button{flex:1;padding:7px;font-size:11px;font-family:monospace;border-radius:3px;cursor:pointer;}
+.btn-cancel{background:transparent;border:0.5px solid #222;color:#444;}
+.btn-enter{background:transparent;border:0.5px solid #00ff88;color:#00ff88;}
+.btn-cancel:hover{border-color:#444;color:#888;}
+.btn-enter:hover{background:rgba(0,255,136,0.08);}
+.modal-err{font-size:10px;color:#ff4444;font-family:monospace;margin-top:8px;min-height:14px;}
+
+.loading{color:#00aa44;font-family:monospace;font-size:12px;text-align:center;padding:20px;}
+.error-msg{color:#ff4444;font-family:monospace;font-size:12px;text-align:center;padding:20px;}
+</style>
+</head>
+<body>
+
+<div class="site">
+<canvas id="bg"></canvas>
+<div class="everything">
+  
+  <div class="header">
+    <div class="site-name" id="navHome">glassz13 / journal</div>
+    <div class="nav">
+      <a href="#" id="linkHome">home</a>
+      <a href="#" id="linkWriting">writing</a>
+      <a href="https://github.com" target="_blank">github</a>
+    </div>
+    <div class="nav-line"></div>
+  </div>
+
+  <div id="dashboardView" style="width:100%; max-width:680px; display:none;">
+    <div class="hero">
+      <div class="pfp">
+        <img src="https://cataas.com/cat/says/hello?width=72&height=72" alt="Cute Cat">
+      </div>
+      <div class="hero-text">
+        <h1>Mohit Kumar Meena</h1>
+        <p>AI engineer, builder, occasional thinker. I write about science, ideas, and the strange loops of reality. Based in Gurugram — staring at code and cosmos in equal measure.</p>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="sidebar" id="topicSidebar"></div>
+      <div class="content">
+        <div class="content-label" id="contentLabel">entries</div>
+        <div id="articlesContainer"></div>
+        <button class="add-btn" id="addBtn">+ new article</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="reader-view" id="readerView">
+    <div class="reader-back" id="backToHome">← back to overview</div>
+    <div class="reader-header">
+       <h1 id="readTitle">Article Title</h1>
+       <div class="reader-meta">Published under <span id="readCategory">Category</span> · <span id="readDate">Date</span></div>
+    </div>
+    <img src="" class="reader-img" id="readImg" alt="Article image banner"/>
+    <div class="reader-body" id="readBody">Content template text...</div>
+    <div class="reader-actions">
+       <button class="action-link action-edit" id="editArticleBtn">edit post</button>
+       <button class="action-link action-delete" id="deleteArticleBtn">delete post</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="editor-view" id="editorWorkspace">
+  <div class="editor-header">
+     <input type="text" id="editTitleInput" class="editor-title-input" placeholder="Untitled Entry..." autocomplete="off"/>
+     <div class="editor-meta-selects">
+        <select id="editCategorySelect" class="editor-select">
+           <option value="Science">Science</option>
+           <option value="Ideas">Ideas</option>
+           <option value="Society">Society</option>
+           <option value="Stories">Stories</option>
+           <option value="Tech">Tech</option>
+        </select>
+        <label class="file-label" for="imageUploadInput">🖼 Image</label>
+        <input type="file" id="imageUploadInput" class="file-input" accept="image/*"/>
+     </div>
+  </div>
+  
+  <div class="editor-textarea-wrapper">
+    <textarea id="editTextarea" class="editor-textarea" placeholder="Start typing your entry here..."></textarea>
+  </div>
+  
+  <div class="editor-footer">
+     <div class="editor-counter" id="editorWordCount">0 words</div>
+     <div class="editor-btns">
+       <button class="editor-btn btn-close-writer" id="closeWriterBtn">Discard</button>
+       <button class="editor-btn btn-save-post" id="savePostBtn">Save Entry</button>
+     </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3>restricted</h3>
+    <p>enter password to continue</p>
+    <input type="password" id="pwInput" placeholder="••••••••"/>
+    <div class="modal-err" id="modalErr"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="cancelBtn">cancel</button>
+      <button class="btn-enter" id="enterBtn">enter</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ===== GITHUB CONFIG =====
+// CHANGE THESE:
+const GITHUB_USERNAME = 'YOUR_USERNAME';  // Your GitHub username
+const GITHUB_REPO = 'glassz13-journal';    // Your repo name
+const GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN';  // Your personal access token
+
+// API URLs
+const API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents`;
+const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main`;
+
+// ===== GITHUB API FUNCTIONS =====
+
+async function fetchPosts() {
+    try {
+        const response = await fetch(`${API_URL}/posts.json`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                // Posts file doesn't exist yet, create default
+                await createDefaultPostsFile();
+                return getDefaultPosts();
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const content = atob(data.content);
+        return JSON.parse(content);
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        // Fallback to default posts
+        return getDefaultPosts();
+    }
+}
+
+function getDefaultPosts() {
+    return [
+        {id: "1", title: "Why the universe is too quiet", category: "Science", date: "Jun 18", readTime: "6 min read", img: "", body: "The Fermi paradox remains one of the most haunting equations in modern astrophysics. If life is an inevitable statistical cosmic byproduct, the interstellar canvas shouldn't feel this empty..."},
+        {id: "2", title: "The strange math behind black hole information", category: "Science", date: "Jun 10", readTime: "9 min read", img: "", body: "Hawking radiation suggested information gets completely pulverized inside singularities. Yet modern quantum mechanics strongly resists information decay..."},
+        {id: "3", title: "Light has no experience of time", category: "Science", date: "May 29", readTime: "4 min read", img: "", body: "From the frame of reference of a traveling photon, creation and absorption happen simultaneously. Time stands perfectly still at $c$."}
+    ];
+}
+
+async function createDefaultPostsFile() {
+    const defaultPosts = getDefaultPosts();
+    const content = btoa(JSON.stringify(defaultPosts, null, 2));
+    await fetch(`${API_URL}/posts.json`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            message: 'Create posts.json',
+            content: content
+        })
+    });
+}
+
+async function savePosts(posts) {
+    try {
+        // First, get the current file SHA
+        const response = await fetch(`${API_URL}/posts.json`);
+        let sha = null;
+        if (response.ok) {
+            const data = await response.json();
+            sha = data.sha;
+        }
+        
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
+        const body = {
+            message: 'Update posts.json',
+            content: content
+        };
+        if (sha) body.sha = sha;
+        
+        const saveResponse = await fetch(`${API_URL}/posts.json`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        });
+        
+        if (!saveResponse.ok) {
+            throw new Error(`Failed to save posts: ${saveResponse.status}`);
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('Error saving posts:', error);
+        throw error;
+    }
+}
+
+async function uploadImage(base64Data, filename) {
+    try {
+        // Remove data:image/...;base64, prefix
+        const base64Content = base64Data.split(',')[1];
+        
+        const response = await fetch(`${API_URL}/images/${filename}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: `Upload image: ${filename}`,
+                content: base64Content
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Failed to upload image: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        // Return the raw URL to access the image
+        return `${RAW_URL}/images/${filename}`;
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw error;
+    }
+}
+
+// ===== APPLICATION CODE =====
+
+let posts = [];
+let activeCategory = "Science";
+let currentArticleId = null;
+let currentActionTarget = null;
+let targetPostId = null;
+let base64ImageStr = "";
+const PASS = 'mohit123';
+
+// Cosmic Background (same as before)
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const stars=Array.from({length:200},()=>({
+  x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
+  r:Math.random()*1.1+0.15,
+  a:Math.random(),
+  da:(Math.random()-0.5)*0.013,
+  green:Math.random()>0.88
+}));
+
+const nebClouds=Array.from({length:5},(_,i)=>({
+  x:(i*160)+Math.random()*60,y:Math.random()*window.innerHeight*0.55,
+  rx:90+Math.random()*60,ry:35+Math.random()*25,
+  a:0.022+Math.random()*0.025,
+  hue:Math.random()>0.5?145:170,
+  dx:(Math.random()-0.5)*0.1
+}));
+
+let comet={x:-200,y:0,vx:0,vy:0,active:false,trail:[]};
+function launchComet(){
+  comet.x=Math.random()>0.5 ? -20 : window.innerWidth+20;
+  comet.y=Math.random()*window.innerHeight*0.55;
+  comet.vx=comet.x < 0 ? (3+Math.random()*2):-(3+Math.random()*2);
+  comet.vy=0.8+Math.random()*1.2;
+  comet.trail=[];comet.active=true;
+}
+setTimeout(launchComet,1500);
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  nebClouds.forEach(c=>{
+    const g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,c.rx);
+    g.addColorStop(0,`hsla(${c.hue},70%,15%,${c.a})`);
+    g.addColorStop(1,'transparent');
+    ctx.save();ctx.scale(1,c.ry/c.rx);
+    ctx.beginPath();ctx.arc(c.x,c.y*(c.rx/c.ry),c.rx,0,Math.PI*2);
+    ctx.fillStyle=g;ctx.fill();ctx.restore();
+    c.x+=c.dx;
+    if(c.x>canvas.width+120)c.x=-120;if(c.x<-120)c.x=canvas.width+120;
+  });
+
+  stars.forEach(s=>{
+    s.a+=s.da;
+    if(s.a<=0.05||s.a>=1)s.da*=-1;
+    s.a=Math.max(0.05,Math.min(1,s.a));
+    ctx.globalAlpha=s.a;
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=s.green?'#00ff88':'#fff';
+    ctx.fill();
+  });
+  ctx.globalAlpha=1;
+
+  if(comet.active){
+    comet.trail.push({x:comet.x,y:comet.y});
+    if(comet.trail.length>42)comet.trail.shift();
+    comet.trail.forEach((p,i)=>{
+      const prog=i/comet.trail.length;
+      ctx.globalAlpha=prog*0.65;
+      ctx.beginPath();ctx.arc(p.x,p.y,1.3*prog,0,Math.PI*2);
+      ctx.fillStyle='#aaffcc';ctx.fill();
+    });
+    ctx.globalAlpha=1;
+    ctx.beginPath();ctx.arc(comet.x,comet.y,2.2,0,Math.PI*2);
+    ctx.fillStyle='#fff';ctx.fill();
+    comet.x+=comet.vx;comet.y+=comet.vy;
+    if(comet.x>canvas.width+60||comet.x<-60||comet.y>canvas.height+60){
+      comet.active=false;
+      setTimeout(launchComet,5000+Math.random()*7000);
+    }
+  }
+  ctx.globalAlpha=1;
+  requestAnimationFrame(draw);
+}
+draw();
+
+// UI Functions
+function renderSidebar(){
+  const sidebar = document.getElementById('topicSidebar');
+  const categories = ["Science", "Ideas", "Society", "Stories", "Tech"];
+  
+  let html = `<div class="sidebar-label">topics</div>`;
+  categories.forEach(cat => {
+    const count = posts.filter(p => p.category === cat).length;
+    const activeClass = (cat === activeCategory) ? 'active' : '';
+    html += `<div class="topic ${activeClass}" onclick="switchCategory('${cat}')">${cat} <span class="topic-count">${count}</span></div>`;
+  });
+  sidebar.innerHTML = html;
+}
+
+function renderArticles(){
+  const container = document.getElementById('articlesContainer');
+  const filtered = posts.filter(p => p.category === activeCategory);
+  document.getElementById('contentLabel').textContent = `${activeCategory.toLowerCase()} — ${filtered.length} entries`;
+  
+  if(filtered.length === 0){
+    container.innerHTML = `<div style="font-family:monospace;font-size:12px;color:#333;padding:20px 0;">No logs in this dimension yet.</div>`;
+    return;
+  }
+  
+  container.innerHTML = filtered.map(p => `
+    <div class="article-card" onclick="openArticle('${p.id}')">
+      <div class="article-title">${p.title}</div>
+      <div class="article-meta"><span>${p.date}</span> · ${p.readTime}</div>
+    </div>
+  `).join('');
+}
+
+function switchCategory(cat){
+  activeCategory = cat;
+  renderSidebar();
+  renderArticles();
+}
+
+function openArticle(id){
+  const post = posts.find(p => p.id === id);
+  if(!post) return;
+  currentArticleId = id;
+  
+  document.getElementById('dashboardView').style.display = 'none';
+  const reader = document.getElementById('readerView');
+  reader.style.display = 'block';
+  
+  document.getElementById('readTitle').textContent = post.title;
+  document.getElementById('readCategory').textContent = post.category;
+  document.getElementById('readDate').textContent = post.date;
+  document.getElementById('readBody').textContent = post.body;
+  
+  const imgEl = document.getElementById('readImg');
+  if(post.img && post.img.startsWith('http')){
+    imgEl.src = post.img;
+    imgEl.style.display = 'block';
+  } else {
+    imgEl.style.display = 'none';
+  }
+  window.scrollTo(0,0);
+}
+
+function showDashboard(){
+  document.getElementById('readerView').style.display = 'none';
+  document.getElementById('dashboardView').style.display = 'block';
+  currentArticleId = null;
+  renderSidebar();
+  renderArticles();
+}
+
+// Auth
+const modal = document.getElementById('modal');
+const pwInput = document.getElementById('pwInput');
+const modalErr = document.getElementById('modalErr');
+
+function challengePassword(action, targetId = null){
+  currentActionTarget = action;
+  targetPostId = targetId;
+  modal.classList.add('show');
+  pwInput.value = '';
+  modalErr.textContent = '';
+  setTimeout(()=>pwInput.focus(), 60);
+}
+
+document.getElementById('cancelBtn').addEventListener('click',()=> modal.classList.remove('show'));
+document.getElementById('enterBtn').addEventListener('click',()=>{
+  if(pwInput.value === PASS){
+    modal.classList.remove('show');
+    executeAuthenticatedAction();
+  } else {
+    modalErr.textContent = 'wrong password';
+  }
+});
+pwInput.addEventListener('keydown', e => { if(e.key === 'Enter') document.getElementById('enterBtn').click(); });
+
+async function executeAuthenticatedAction(){
+  if(currentActionTarget === 'create') {
+    launchWriter(null);
+  } else if (currentActionTarget === 'edit') {
+    launchWriter(targetPostId);
+  } else if (currentActionTarget === 'delete') {
+    posts = posts.filter(p => p.id !== targetPostId);
+    await savePosts(posts);
+    showDashboard();
+  }
+}
+
+// Editor
+function launchWriter(id){
+  const workspace = document.getElementById('editorWorkspace');
+  workspace.style.display = 'flex';
+  
+  if(id) {
+    const post = posts.find(p => p.id === id);
+    document.getElementById('editTitleInput').value = post.title;
+    document.getElementById('editCategorySelect').value = post.category;
+    document.getElementById('editTextarea').value = post.body;
+    base64ImageStr = post.img || "";
+    targetPostId = id;
+  } else {
+    document.getElementById('editTitleInput').value = "";
+    document.getElementById('editCategorySelect').value = activeCategory;
+    document.getElementById('editTextarea').value = "";
+    base64ImageStr = "";
+    targetPostId = null;
+  }
+  updateWordCount();
+}
+
+const txtArea = document.getElementById('editTextarea');
+txtArea.addEventListener('input', updateWordCount);
+
+function updateWordCount(){
+  const words = txtArea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+  document.getElementById('editorWordCount').textContent = `${words} words`;
+}
+
+document.getElementById('imageUploadInput').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onloadend = function() {
+    base64ImageStr = reader.result;
+    alert("Image will be uploaded when you save the article.");
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('savePostBtn').addEventListener('click', async () => {
+  const title = document.getElementById('editTitleInput').value.trim() || "Untitled Entry";
+  const cat = document.getElementById('editCategorySelect').value;
+  const body = document.getElementById('editTextarea').value;
+  const wordsCount = body.trim().split(/\s+/).filter(w => w.length > 0).length;
+  const readTimeMin = Math.max(1, Math.ceil(wordsCount / 200)) + " min read";
+  
+  const formatOptions = { month: 'short', day: 'numeric' };
+  const todayStr = new Date().toLocaleDateString('en-US', formatOptions);
+
+  try {
+    let imageUrl = "";
+    
+    // Upload image if exists
+    if (base64ImageStr && base64ImageStr.startsWith('data:image')) {
+      const ext = base64ImageStr.split(';')[0].split('/')[1];
+      const filename = `img_${Date.now()}.${ext}`;
+      imageUrl = await uploadImage(base64ImageStr, filename);
+    }
+
+    if(targetPostId) {
+      const pIndex = posts.findIndex(p => p.id === targetPostId);
+      posts[pIndex].title = title;
+      posts[pIndex].category = cat;
+      posts[pIndex].body = body;
+      posts[pIndex].readTime = readTimeMin;
+      if(imageUrl) posts[pIndex].img = imageUrl;
+    } else {
+      const newPost = {
+        id: Date.now().toString(),
+        title: title,
+        category: cat,
+        date: todayStr,
+        readTime: readTimeMin,
+        img: imageUrl,
+        body: body
+      };
+      posts.unshift(newPost);
+    }
+    
+    await savePosts(posts);
+    document.getElementById('editorWorkspace').style.display = 'none';
+    activeCategory = cat;
+    showDashboard();
+  } catch (error) {
+    alert('Error saving article: ' + error.message);
+  }
+});
+
+document.getElementById('closeWriterBtn').addEventListener('click', () => {
+  if(confirm("Discard unsaved text changes?")) {
+     document.getElementById('editorWorkspace').style.display = 'none';
+  }
+});
+
+// Event Handlers
+document.getElementById('addBtn').addEventListener('click', () => challengePassword('create'));
+document.getElementById('editArticleBtn').addEventListener('click', () => challengePassword('edit', currentArticleId));
+document.getElementById('deleteArticleBtn').addEventListener('click', () => {
+  if(confirm("Are you sure you want to completely erase this entry?")) {
+     challengePassword('delete', currentArticleId);
+  }
+});
+
+document.getElementById('backToHome').addEventListener('click', showDashboard);
+document.getElementById('navHome').addEventListener('click', showDashboard);
+document.getElementById('linkHome').addEventListener('click', showDashboard);
+document.getElementById('linkWriting').addEventListener('click', showDashboard);
+
+// Initialize
+async function init() {
+  try {
+    document.getElementById('dashboardView').style.display = 'block';
+    posts = await fetchPosts();
+    renderSidebar();
+    renderArticles();
+  } catch (error) {
+    console.error('Init error:', error);
+    document.getElementById('articlesContainer').innerHTML = 
+      `<div class="error-msg">⚠️ Error loading articles: ${error.message}</div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
