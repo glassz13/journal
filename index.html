@@ -42,9 +42,6 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events
 .article-meta{font-size:10px;color:#333;font-family:monospace;}
 .article-meta span{color:#00aa44;}
 
-.add-btn{display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:5px 12px;border:0.5px solid #00ff88;color:#00ff88;font-size:11px;font-family:monospace;cursor:pointer;background:transparent;border-radius:3px;letter-spacing:0.05em;}
-.add-btn:hover{background:rgba(0,255,136,0.07);}
-
 .reader-view{display:none;width:100%;max-width:640px;padding:30px 20px;}
 .reader-back{font-size:11px;font-family:monospace;color:#00cc66;text-decoration:none;cursor:pointer;display:inline-block;margin-bottom:20px;}
 .reader-header h1{font-size:24px;font-weight:normal;margin-bottom:10px;color:#fff;}
@@ -52,44 +49,6 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events
 .reader-meta span{color:#00ff88;}
 .reader-img{width:100%;max-height:320px;object-fit:cover;border:0.5px solid #1a1a1a;border-radius:4px;margin-bottom:24px;display:none;}
 .reader-body{font-size:15px;line-height:1.75;color:#ccc;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;}
-.reader-actions{margin-top:40px;border-top:0.5px solid #0a1a0a;padding-top:15px;display:flex;gap:15px;}
-.action-link{font-size:11px;font-family:monospace;cursor:pointer;background:none;border:none;}
-.action-edit{color:#00ff88;}
-.action-delete{color:#ff4444;}
-
-.editor-view{display:none;position:fixed;inset:0;background:#030905;z-index:100;flex-direction:column;padding:30px 40px;box-sizing:border-box;}
-.editor-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:0.5px solid #0a2a12;padding-bottom:15px;}
-.editor-title-input{background:transparent;border:none;color:#00ff88;font-family:'Georgia',serif;font-size:22px;width:55%;outline:none;padding:5px 0;}
-.editor-title-input::placeholder{color:#003311;}
-.editor-meta-selects{display:flex;gap:12px;align-items:center;}
-.editor-select, .file-label{background:#000;border:0.5px solid #00aa44;color:#00ff88;font-family:monospace;font-size:10px;padding:5px 10px;border-radius:3px;outline:none;cursor:pointer;}
-.file-input{display:none;}
-.file-label{cursor:pointer;}
-.editor-textarea-wrapper{flex:1;display:flex;align-items:flex-start;justify-content:center;min-height:0;padding:10px 0;width:100%;}
-.editor-textarea{width:100%;max-width:800px;height:450px;background:transparent;border:0.5px solid #0a2a12;border-radius:6px;color:#00dd66;font-family:monospace;font-size:14px;line-height:1.8;resize:vertical;outline:none;padding:20px;transition:height 0.2s;word-wrap:break-word;overflow-wrap:break-word;white-space:pre-wrap;}
-.editor-textarea:focus{border-color:#00ff88;}
-.editor-footer{display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid #0a2a12;padding-top:15px;margin-top:10px;}
-.editor-counter{font-family:monospace;font-size:11px;color:#005522;}
-.editor-btns{display:flex;gap:12px;}
-.editor-btn{background:transparent;font-family:monospace;font-size:11px;padding:6px 18px;border-radius:3px;cursor:pointer;}
-.btn-save-post{border:0.5px solid #00ff88;color:#00ff88;}
-.btn-save-post:hover{background:rgba(0,255,136,0.1);}
-.btn-close-writer{border:0.5px solid #555;color:#555;}
-
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;align-items:center;justify-content:center;}
-.modal-bg.show{display:flex;}
-.modal{background:#040a06;border:0.5px solid #00ff88;border-radius:6px;padding:28px 32px;width:270px;text-align:center;}
-.modal h3{font-size:14px;color:#fff;font-weight:normal;margin-bottom:4px;}
-.modal p{font-size:11px;color:#444;font-family:monospace;margin-bottom:16px;}
-.modal input{width:100%;background:#000;border:0.5px solid #0a2a12;color:#00ff88;font-family:monospace;font-size:13px;padding:8px 10px;border-radius:3px;text-align:center;letter-spacing:0.1em;outline:none;}
-.modal input:focus{border-color:#00ff88;}
-.modal-btns{display:flex;gap:10px;margin-top:14px;}
-.modal-btns button{flex:1;padding:7px;font-size:11px;font-family:monospace;border-radius:3px;cursor:pointer;}
-.btn-cancel{background:transparent;border:0.5px solid #222;color:#444;}
-.btn-enter{background:transparent;border:0.5px solid #00ff88;color:#00ff88;}
-.btn-cancel:hover{border-color:#444;color:#888;}
-.btn-enter:hover{background:rgba(0,255,136,0.08);}
-.modal-err{font-size:10px;color:#ff4444;font-family:monospace;margin-top:8px;min-height:14px;}
 
 .loading{color:#00aa44;font-family:monospace;font-size:12px;text-align:center;padding:20px;}
 .error-msg{color:#ff4444;font-family:monospace;font-size:12px;text-align:center;padding:20px;}
@@ -106,7 +65,8 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events
     <div class="nav">
       <a href="#" id="linkHome">home</a>
       <a href="#" id="linkWriting">writing</a>
-      <a href="https://github.com" target="_blank">github</a>
+      <a href="https://github.com/glassz13" target="_blank">github</a>
+      <a href="admin.html" style="color:#333;">⚙</a>
     </div>
     <div class="nav-line"></div>
   </div>
@@ -114,7 +74,7 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events
   <div id="dashboardView" style="width:100%; max-width:680px; display:none;">
     <div class="hero">
       <div class="pfp">
-        <img src="https://cataas.com/cat/says/hello?width=72&height=72" alt="Cute Cat">
+        <img src="images/pfp.jpg" alt="Profile Picture" onerror="this.src='https://cataas.com/cat/says/hello?width=72&height=72'">
       </div>
       <div class="hero-text">
         <h1>Mohit Kumar Meena</h1>
@@ -127,7 +87,6 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events
       <div class="content">
         <div class="content-label" id="contentLabel">entries</div>
         <div id="articlesContainer"></div>
-        <button class="add-btn" id="addBtn">+ new article</button>
       </div>
     </div>
   </div>
@@ -140,195 +99,15 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events
     </div>
     <img src="" class="reader-img" id="readImg" alt="Article image banner"/>
     <div class="reader-body" id="readBody">Content template text...</div>
-    <div class="reader-actions">
-       <button class="action-link action-edit" id="editArticleBtn">edit post</button>
-       <button class="action-link action-delete" id="deleteArticleBtn">delete post</button>
-    </div>
   </div>
 
-</div>
-
-<div class="editor-view" id="editorWorkspace">
-  <div class="editor-header">
-     <input type="text" id="editTitleInput" class="editor-title-input" placeholder="Untitled Entry..." autocomplete="off"/>
-     <div class="editor-meta-selects">
-        <select id="editCategorySelect" class="editor-select">
-           <option value="Science">Science</option>
-           <option value="Ideas">Ideas</option>
-           <option value="Society">Society</option>
-           <option value="Stories">Stories</option>
-           <option value="Tech">Tech</option>
-        </select>
-        <label class="file-label" for="imageUploadInput">🖼 Image</label>
-        <input type="file" id="imageUploadInput" class="file-input" accept="image/*"/>
-     </div>
-  </div>
-  
-  <div class="editor-textarea-wrapper">
-    <textarea id="editTextarea" class="editor-textarea" placeholder="Start typing your entry here..."></textarea>
-  </div>
-  
-  <div class="editor-footer">
-     <div class="editor-counter" id="editorWordCount">0 words</div>
-     <div class="editor-btns">
-       <button class="editor-btn btn-close-writer" id="closeWriterBtn">Discard</button>
-       <button class="editor-btn btn-save-post" id="savePostBtn">Save Entry</button>
-     </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="modal">
-  <div class="modal">
-    <h3>restricted</h3>
-    <p>enter password to continue</p>
-    <input type="password" id="pwInput" placeholder="••••••••"/>
-    <div class="modal-err" id="modalErr"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" id="cancelBtn">cancel</button>
-      <button class="btn-enter" id="enterBtn">enter</button>
-    </div>
-  </div>
 </div>
 </div>
 
 <script>
-// ===== GITHUB CONFIG =====
-// CHANGE THESE:
-const GITHUB_USERNAME = 'glassz13';  // Your GitHub username
-const GITHUB_REPO = 'glassz13-journal';    // Your repo name
-const GITHUB_TOKEN = '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';  // Your personal access token
-
-// API URLs
-const API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents`;
-const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main`;
-
-// ===== GITHUB API FUNCTIONS =====
-
-async function fetchPosts() {
-    try {
-        const response = await fetch(`${API_URL}/posts.json`);
-        if (!response.ok) {
-            if (response.status === 404) {
-                // Posts file doesn't exist yet, create default
-                await createDefaultPostsFile();
-                return getDefaultPosts();
-            }
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const content = atob(data.content);
-        return JSON.parse(content);
-    } catch (error) {
-        console.error('Error fetching posts:', error);
-        // Fallback to default posts
-        return getDefaultPosts();
-    }
-}
-
-function getDefaultPosts() {
-    return [
-        {id: "1", title: "Why the universe is too quiet", category: "Science", date: "Jun 18", readTime: "6 min read", img: "", body: "The Fermi paradox remains one of the most haunting equations in modern astrophysics. If life is an inevitable statistical cosmic byproduct, the interstellar canvas shouldn't feel this empty..."},
-        {id: "2", title: "The strange math behind black hole information", category: "Science", date: "Jun 10", readTime: "9 min read", img: "", body: "Hawking radiation suggested information gets completely pulverized inside singularities. Yet modern quantum mechanics strongly resists information decay..."},
-        {id: "3", title: "Light has no experience of time", category: "Science", date: "May 29", readTime: "4 min read", img: "", body: "From the frame of reference of a traveling photon, creation and absorption happen simultaneously. Time stands perfectly still at $c$."}
-    ];
-}
-
-async function createDefaultPostsFile() {
-    const defaultPosts = getDefaultPosts();
-    const content = btoa(JSON.stringify(defaultPosts, null, 2));
-    await fetch(`${API_URL}/posts.json`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            message: 'Create posts.json',
-            content: content
-        })
-    });
-}
-
-async function savePosts(posts) {
-    try {
-        // First, get the current file SHA
-        const response = await fetch(`${API_URL}/posts.json`);
-        let sha = null;
-        if (response.ok) {
-            const data = await response.json();
-            sha = data.sha;
-        }
-        
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
-        const body = {
-            message: 'Update posts.json',
-            content: content
-        };
-        if (sha) body.sha = sha;
-        
-        const saveResponse = await fetch(`${API_URL}/posts.json`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `token ${GITHUB_TOKEN}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        });
-        
-        if (!saveResponse.ok) {
-            throw new Error(`Failed to save posts: ${saveResponse.status}`);
-        }
-        
-        return true;
-    } catch (error) {
-        console.error('Error saving posts:', error);
-        throw error;
-    }
-}
-
-async function uploadImage(base64Data, filename) {
-    try {
-        // Remove data:image/...;base64, prefix
-        const base64Content = base64Data.split(',')[1];
-        
-        const response = await fetch(`${API_URL}/images/${filename}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `token ${GITHUB_TOKEN}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: `Upload image: ${filename}`,
-                content: base64Content
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Failed to upload image: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        // Return the raw URL to access the image
-        return `${RAW_URL}/images/${filename}`;
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        throw error;
-    }
-}
-
-// ===== APPLICATION CODE =====
-
-let posts = [];
-let activeCategory = "Science";
-let currentArticleId = null;
-let currentActionTarget = null;
-let targetPostId = null;
-let base64ImageStr = "";
-const PASS = 'mohit123';
-
-// Cosmic Background (same as before)
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
+// ===== COSMIC BACKGROUND =====
+const canvas=document.getElementById('bg');
+const ctx=canvas.getContext('2d');
 function resizeCanvas(){
   canvas.width=window.innerWidth;
   canvas.height=window.innerHeight;
@@ -411,7 +190,42 @@ function draw(){
 }
 draw();
 
-// UI Functions
+// ===== DATA =====
+const GITHUB_USERNAME = 'glassz13';
+const GITHUB_REPO = 'journal';
+const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main`;
+
+let posts = [];
+let activeCategory = "Science";
+let currentArticleId = null;
+
+// ===== GITHUB API FUNCTIONS =====
+async function fetchPosts() {
+    try {
+        const response = await fetch(`${RAW_URL}/posts.json`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                return getDefaultPosts();
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        return getDefaultPosts();
+    }
+}
+
+function getDefaultPosts() {
+    return [
+        {id: "1", title: "Why the universe is too quiet", category: "Science", date: "Jun 18", readTime: "6 min read", img: "", body: "The Fermi paradox remains one of the most haunting equations in modern astrophysics. If life is an inevitable statistical cosmic byproduct, the interstellar canvas shouldn't feel this empty..."},
+        {id: "2", title: "The strange math behind black hole information", category: "Science", date: "Jun 10", readTime: "9 min read", img: "", body: "Hawking radiation suggested information gets completely pulverized inside singularities. Yet modern quantum mechanics strongly resists information decay..."},
+        {id: "3", title: "Light has no experience of time", category: "Science", date: "May 29", readTime: "4 min read", img: "", body: "From the frame of reference of a traveling photon, creation and absorption happen simultaneously. Time stands perfectly still at $c$."}
+    ];
+}
+
+// ===== UI FUNCTIONS =====
 function renderSidebar(){
   const sidebar = document.getElementById('topicSidebar');
   const categories = ["Science", "Ideas", "Society", "Stories", "Tech"];
@@ -445,6 +259,10 @@ function renderArticles(){
 
 function switchCategory(cat){
   activeCategory = cat;
+  // Update URL without reload
+  const url = new URL(window.location);
+  url.searchParams.set('category', cat);
+  window.history.pushState({}, '', url);
   renderSidebar();
   renderArticles();
 }
@@ -453,6 +271,11 @@ function openArticle(id){
   const post = posts.find(p => p.id === id);
   if(!post) return;
   currentArticleId = id;
+  
+  // Update URL
+  const url = new URL(window.location);
+  url.searchParams.set('article', id);
+  window.history.pushState({}, '', url);
   
   document.getElementById('dashboardView').style.display = 'none';
   const reader = document.getElementById('readerView');
@@ -477,169 +300,71 @@ function showDashboard(){
   document.getElementById('readerView').style.display = 'none';
   document.getElementById('dashboardView').style.display = 'block';
   currentArticleId = null;
+  // Remove article param from URL
+  const url = new URL(window.location);
+  url.searchParams.delete('article');
+  window.history.pushState({}, '', url);
   renderSidebar();
   renderArticles();
 }
 
-// Auth
-const modal = document.getElementById('modal');
-const pwInput = document.getElementById('pwInput');
-const modalErr = document.getElementById('modalErr');
-
-function challengePassword(action, targetId = null){
-  currentActionTarget = action;
-  targetPostId = targetId;
-  modal.classList.add('show');
-  pwInput.value = '';
-  modalErr.textContent = '';
-  setTimeout(()=>pwInput.focus(), 60);
-}
-
-document.getElementById('cancelBtn').addEventListener('click',()=> modal.classList.remove('show'));
-document.getElementById('enterBtn').addEventListener('click',()=>{
-  if(pwInput.value === PASS){
-    modal.classList.remove('show');
-    executeAuthenticatedAction();
-  } else {
-    modalErr.textContent = 'wrong password';
-  }
-});
-pwInput.addEventListener('keydown', e => { if(e.key === 'Enter') document.getElementById('enterBtn').click(); });
-
-async function executeAuthenticatedAction(){
-  if(currentActionTarget === 'create') {
-    launchWriter(null);
-  } else if (currentActionTarget === 'edit') {
-    launchWriter(targetPostId);
-  } else if (currentActionTarget === 'delete') {
-    posts = posts.filter(p => p.id !== targetPostId);
-    await savePosts(posts);
-    showDashboard();
-  }
-}
-
-// Editor
-function launchWriter(id){
-  const workspace = document.getElementById('editorWorkspace');
-  workspace.style.display = 'flex';
-  
-  if(id) {
-    const post = posts.find(p => p.id === id);
-    document.getElementById('editTitleInput').value = post.title;
-    document.getElementById('editCategorySelect').value = post.category;
-    document.getElementById('editTextarea').value = post.body;
-    base64ImageStr = post.img || "";
-    targetPostId = id;
-  } else {
-    document.getElementById('editTitleInput').value = "";
-    document.getElementById('editCategorySelect').value = activeCategory;
-    document.getElementById('editTextarea').value = "";
-    base64ImageStr = "";
-    targetPostId = null;
-  }
-  updateWordCount();
-}
-
-const txtArea = document.getElementById('editTextarea');
-txtArea.addEventListener('input', updateWordCount);
-
-function updateWordCount(){
-  const words = txtArea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-  document.getElementById('editorWordCount').textContent = `${words} words`;
-}
-
-document.getElementById('imageUploadInput').addEventListener('change', function(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onloadend = function() {
-    base64ImageStr = reader.result;
-    alert("Image will be uploaded when you save the article.");
-  };
-  reader.readAsDataURL(file);
-});
-
-document.getElementById('savePostBtn').addEventListener('click', async () => {
-  const title = document.getElementById('editTitleInput').value.trim() || "Untitled Entry";
-  const cat = document.getElementById('editCategorySelect').value;
-  const body = document.getElementById('editTextarea').value;
-  const wordsCount = body.trim().split(/\s+/).filter(w => w.length > 0).length;
-  const readTimeMin = Math.max(1, Math.ceil(wordsCount / 200)) + " min read";
-  
-  const formatOptions = { month: 'short', day: 'numeric' };
-  const todayStr = new Date().toLocaleDateString('en-US', formatOptions);
-
-  try {
-    let imageUrl = "";
-    
-    // Upload image if exists
-    if (base64ImageStr && base64ImageStr.startsWith('data:image')) {
-      const ext = base64ImageStr.split(';')[0].split('/')[1];
-      const filename = `img_${Date.now()}.${ext}`;
-      imageUrl = await uploadImage(base64ImageStr, filename);
-    }
-
-    if(targetPostId) {
-      const pIndex = posts.findIndex(p => p.id === targetPostId);
-      posts[pIndex].title = title;
-      posts[pIndex].category = cat;
-      posts[pIndex].body = body;
-      posts[pIndex].readTime = readTimeMin;
-      if(imageUrl) posts[pIndex].img = imageUrl;
-    } else {
-      const newPost = {
-        id: Date.now().toString(),
-        title: title,
-        category: cat,
-        date: todayStr,
-        readTime: readTimeMin,
-        img: imageUrl,
-        body: body
-      };
-      posts.unshift(newPost);
-    }
-    
-    await savePosts(posts);
-    document.getElementById('editorWorkspace').style.display = 'none';
-    activeCategory = cat;
-    showDashboard();
-  } catch (error) {
-    alert('Error saving article: ' + error.message);
-  }
-});
-
-document.getElementById('closeWriterBtn').addEventListener('click', () => {
-  if(confirm("Discard unsaved text changes?")) {
-     document.getElementById('editorWorkspace').style.display = 'none';
-  }
-});
-
-// Event Handlers
-document.getElementById('addBtn').addEventListener('click', () => challengePassword('create'));
-document.getElementById('editArticleBtn').addEventListener('click', () => challengePassword('edit', currentArticleId));
-document.getElementById('deleteArticleBtn').addEventListener('click', () => {
-  if(confirm("Are you sure you want to completely erase this entry?")) {
-     challengePassword('delete', currentArticleId);
-  }
-});
-
+// ===== NAVIGATION =====
 document.getElementById('backToHome').addEventListener('click', showDashboard);
 document.getElementById('navHome').addEventListener('click', showDashboard);
 document.getElementById('linkHome').addEventListener('click', showDashboard);
 document.getElementById('linkWriting').addEventListener('click', showDashboard);
 
-// Initialize
+// ===== HANDLE BROWSER BACK/FORWARD =====
+window.addEventListener('popstate', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = urlParams.get('article');
+    const category = urlParams.get('category');
+    
+    if (articleId) {
+        const post = posts.find(p => p.id === articleId);
+        if (post) {
+            openArticle(articleId);
+        }
+    } else {
+        if (category) {
+            activeCategory = category;
+        }
+        showDashboard();
+    }
+});
+
+// ===== INIT =====
 async function init() {
-  try {
-    document.getElementById('dashboardView').style.display = 'block';
-    posts = await fetchPosts();
-    renderSidebar();
-    renderArticles();
-  } catch (error) {
-    console.error('Init error:', error);
-    document.getElementById('articlesContainer').innerHTML = 
-      `<div class="error-msg">⚠️ Error loading articles: ${error.message}</div>`;
-  }
+    try {
+        document.getElementById('dashboardView').style.display = 'block';
+        posts = await fetchPosts();
+        
+        // Check URL for direct article
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get('article');
+        const category = urlParams.get('category');
+        
+        if (category) {
+            activeCategory = category;
+        }
+        
+        renderSidebar();
+        renderArticles();
+        
+        // If article param exists, open it
+        if (articleId) {
+            setTimeout(() => {
+                const post = posts.find(p => p.id === articleId);
+                if (post) {
+                    openArticle(articleId);
+                }
+            }, 100);
+        }
+    } catch (error) {
+        console.error('Init error:', error);
+        document.getElementById('articlesContainer').innerHTML = 
+            `<div class="error-msg">⚠️ Error loading articles: ${error.message}</div>`;
+    }
 }
 
 init();
