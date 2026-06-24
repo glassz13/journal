@@ -1,373 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>glassz13 / journal</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;color:#fff;font-family:'Georgia',serif;}
-.site{background:#000;color:#fff;min-height:100vh;overflow-x:hidden;position:relative;}
-canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
-.everything{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
-
-.header{width:100%;padding:20px 0 0;text-align:center;}
-.site-name{font-size:11px;letter-spacing:0.22em;color:#00ff88;font-family:monospace;text-transform:uppercase;cursor:pointer;}
-.nav{display:flex;gap:28px;justify-content:center;margin-top:8px;}
-.nav a{font-size:12px;color:#00cc66;text-decoration:none;letter-spacing:0.08em;font-family:monospace;}
-.nav a:hover{color:#00ff88;}
-.nav-line{width:100%;height:0.5px;background:#0a1a0a;margin-top:16px;}
-
-.hero{width:100%;max-width:680px;padding:20px 40px 22px;display:flex;align-items:center;gap:22px;border-bottom:0.5px solid #0a1a0a;}
-.pfp{width:72px;height:72px;border-radius:50%;background:#000;border:1.5px solid #00ff88;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
-.pfp img{width:100%;height:100%;object-fit:cover;}
-.hero-text h1{font-size:20px;color:#fff;font-weight:normal;letter-spacing:0.02em;margin-bottom:5px;}
-.hero-text p{font-size:11px;color:#666;line-height:1.8;font-family:monospace;max-width:480px;}
-
-.main{width:100%;max-width:680px;display:grid;grid-template-columns:148px 1fr;width:100%;}
-.sidebar{border-right:0.5px solid #0a1a0a;padding:20px 0;}
-.sidebar-label{font-size:9px;letter-spacing:0.22em;color:#00aa44;font-family:monospace;padding:0 18px 10px;text-transform:uppercase;}
-.topic{padding:7px 18px;font-size:12px;color:#444;font-family:monospace;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;display:flex;justify-content:space-between;align-items:center;}
-.topic:hover{color:#fff;border-left-color:#00ff88;background:rgba(0,255,136,0.04);}
-.topic.active{color:#00ff88;border-left-color:#00ff88;background:rgba(0,255,136,0.05);}
-.topic-count{font-size:9px;color:#333;}
-.topic.active .topic-count{color:#00aa44;}
-
-.content{padding:20px 26px;}
-.content-label{font-size:9px;letter-spacing:0.22em;color:#00aa44;font-family:monospace;margin-bottom:14px;text-transform:uppercase;}
-.article-card{border-bottom:0.5px solid #0d0d0d;padding:11px 0;cursor:pointer;position:relative;}
-.article-card:last-of-type{border-bottom:none;}
-.article-card:hover .article-title{color:#00ff88;}
-.article-title{font-size:14px;color:#fff;margin-bottom:3px;transition:color 0.15s;}
-.article-meta{font-size:10px;color:#333;font-family:monospace;}
-.article-meta span{color:#00aa44;}
-
-.reader-view{display:none;width:100%;max-width:640px;padding:30px 20px;}
-.reader-back{font-size:11px;font-family:monospace;color:#00cc66;text-decoration:none;cursor:pointer;display:inline-block;margin-bottom:20px;}
-.reader-header h1{font-size:24px;font-weight:normal;margin-bottom:10px;color:#fff;}
-.reader-meta{font-size:11px;font-family:monospace;color:#555;margin-bottom:20px;display:flex;gap:10px;}
-.reader-meta span{color:#00ff88;}
-.reader-img{width:100%;max-height:320px;object-fit:cover;border:0.5px solid #1a1a1a;border-radius:4px;margin-bottom:24px;display:none;}
-.reader-body{font-size:15px;line-height:1.75;color:#ccc;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;}
-
-.loading{color:#00aa44;font-family:monospace;font-size:12px;text-align:center;padding:20px;}
-.error-msg{color:#ff4444;font-family:monospace;font-size:12px;text-align:center;padding:20px;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>glassz13 / journal</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="site">
-<canvas id="bg"></canvas>
-<div class="everything">
-  
-  <div class="header">
-    <div class="site-name" id="navHome">glassz13 / journal</div>
-    <div class="nav">
-      <a href="#" id="linkHome">home</a>
-      <a href="#" id="linkWriting">writing</a>
-      <a href="https://github.com/glassz13" target="_blank">github</a>
-      <a href="admin.html" style="color:#333;">⚙</a>
-    </div>
-    <div class="nav-line"></div>
-  </div>
+    <canvas id="bg"></canvas>
+    
+    <div class="everything">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="site-name" id="navHome">glassz13 / journal</div>
+            <div class="nav">
+                <a href="#" id="linkHome">home</a>
+                <a href="https://instagram.com/glassz_13" target="_blank">follow me</a>
+                <a href="https://github.com/glassz13" target="_blank">github</a>
+            </div>
+            <div class="nav-line"></div>
+        </div>
 
-  <div id="dashboardView" style="width:100%; max-width:680px; display:none;">
-    <div class="hero">
-      <div class="pfp">
-        <img src="images/pfp.jpg" alt="Profile Picture" onerror="this.src='https://cataas.com/cat/says/hello?width=72&height=72'">
-      </div>
-      <div class="hero-text">
-        <h1>Mohit Kumar Meena</h1>
-        <p>AI engineer, builder, occasional thinker. I write about science, ideas, and the strange loops of reality. Based in Gurugram — staring at code and cosmos in equal measure.</p>
-      </div>
-    </div>
+        <!-- DASHBOARD -->
+        <div id="dashboardView" style="width:100%; max-width:680px; display:none;">
+            <div class="hero">
+                <div class="pfp">
+                    <img src="images/pfp.jpg" alt="Profile Picture" onerror="this.src='https://cataas.com/cat/says/hello?width=72&height=72'">
+                </div>
+                <div class="hero-text">
+                    <h1>Mohit Kumar Meena</h1>
+                    <p>AI engineer, builder, occasional thinker. I write about science, ideas, and the strange loops of reality. Based in Gurugram — staring at code and cosmos in equal measure.</p>
+                </div>
+            </div>
 
-    <div class="main">
-      <div class="sidebar" id="topicSidebar"></div>
-      <div class="content">
-        <div class="content-label" id="contentLabel">entries</div>
-        <div id="articlesContainer"></div>
-      </div>
-    </div>
-  </div>
+            <div class="main">
+                <div class="sidebar" id="topicSidebar"></div>
+                <div class="content">
+                    <div class="content-label" id="contentLabel">entries</div>
+                    <div id="articlesContainer"></div>
+                </div>
+            </div>
+        </div>
 
-  <div class="reader-view" id="readerView">
-    <div class="reader-back" id="backToHome">← back to overview</div>
-    <div class="reader-header">
-       <h1 id="readTitle">Article Title</h1>
-       <div class="reader-meta">Published under <span id="readCategory">Category</span> · <span id="readDate">Date</span></div>
-    </div>
-    <img src="" class="reader-img" id="readImg" alt="Article image banner"/>
-    <div class="reader-body" id="readBody">Content template text...</div>
-  </div>
+        <!-- READER VIEW -->
+        <div class="reader-view" id="readerView">
+            <div class="reader-back" id="backToHome">← back to overview</div>
+            <div class="reader-header">
+                <h1 id="readTitle">Article Title</h1>
+                <div class="reader-meta">Published under <span id="readCategory">Category</span> · <span id="readDate">Date</span></div>
+            </div>
+            <img src="" class="reader-img" id="readImg" alt="Article image banner"/>
+            <div class="reader-body" id="readBody"></div>
+        </div>
 
+    </div>
 </div>
-</div>
+
+<!-- SUPABASE SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+// ===== SUPABASE INIT =====
+const SUPABASE_URL = 'https://cjqvhlpbhuyqjogalhhm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqcXZobHBiaHV5cWpvZ2FsaGhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNzkwMjQsImV4cCI6MjA5Nzg1NTAyNH0.kW6Ou5mDd2r8aWwPwEX2B1o1pEEwUqq2F6sDOMD0mGA';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // ===== COSMIC BACKGROUND =====
-const canvas=document.getElementById('bg');
-const ctx=canvas.getContext('2d');
-function resizeCanvas(){
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-const stars=Array.from({length:200},()=>({
-  x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
-  r:Math.random()*1.1+0.15,
-  a:Math.random(),
-  da:(Math.random()-0.5)*0.013,
-  green:Math.random()>0.88
+const stars = Array.from({ length: 200 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.1 + 0.15,
+    a: Math.random(),
+    da: (Math.random() - 0.5) * 0.013,
+    green: Math.random() > 0.88
 }));
 
-const nebClouds=Array.from({length:5},(_,i)=>({
-  x:(i*160)+Math.random()*60,y:Math.random()*window.innerHeight*0.55,
-  rx:90+Math.random()*60,ry:35+Math.random()*25,
-  a:0.022+Math.random()*0.025,
-  hue:Math.random()>0.5?145:170,
-  dx:(Math.random()-0.5)*0.1
+const nebClouds = Array.from({ length: 5 }, (_, i) => ({
+    x: (i * 160) + Math.random() * 60,
+    y: Math.random() * window.innerHeight * 0.55,
+    rx: 90 + Math.random() * 60,
+    ry: 35 + Math.random() * 25,
+    a: 0.022 + Math.random() * 0.025,
+    hue: Math.random() > 0.5 ? 145 : 170,
+    dx: (Math.random() - 0.5) * 0.1
 }));
 
-let comet={x:-200,y:0,vx:0,vy:0,active:false,trail:[]};
-function launchComet(){
-  comet.x=Math.random()>0.5 ? -20 : window.innerWidth+20;
-  comet.y=Math.random()*window.innerHeight*0.55;
-  comet.vx=comet.x < 0 ? (3+Math.random()*2):-(3+Math.random()*2);
-  comet.vy=0.8+Math.random()*1.2;
-  comet.trail=[];comet.active=true;
+let comet = { x: -200, y: 0, vx: 0, vy: 0, active: false, trail: [] };
+
+function launchComet() {
+    comet.x = Math.random() > 0.5 ? -20 : window.innerWidth + 20;
+    comet.y = Math.random() * window.innerHeight * 0.55;
+    comet.vx = comet.x < 0 ? (3 + Math.random() * 2) : -(3 + Math.random() * 2);
+    comet.vy = 0.8 + Math.random() * 1.2;
+    comet.trail = [];
+    comet.active = true;
 }
-setTimeout(launchComet,1500);
+setTimeout(launchComet, 1500);
 
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  nebClouds.forEach(c=>{
-    const g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,c.rx);
-    g.addColorStop(0,`hsla(${c.hue},70%,15%,${c.a})`);
-    g.addColorStop(1,'transparent');
-    ctx.save();ctx.scale(1,c.ry/c.rx);
-    ctx.beginPath();ctx.arc(c.x,c.y*(c.rx/c.ry),c.rx,0,Math.PI*2);
-    ctx.fillStyle=g;ctx.fill();ctx.restore();
-    c.x+=c.dx;
-    if(c.x>canvas.width+120)c.x=-120;if(c.x<-120)c.x=canvas.width+120;
-  });
-
-  stars.forEach(s=>{
-    s.a+=s.da;
-    if(s.a<=0.05||s.a>=1)s.da*=-1;
-    s.a=Math.max(0.05,Math.min(1,s.a));
-    ctx.globalAlpha=s.a;
-    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=s.green?'#00ff88':'#fff';
-    ctx.fill();
-  });
-  ctx.globalAlpha=1;
-
-  if(comet.active){
-    comet.trail.push({x:comet.x,y:comet.y});
-    if(comet.trail.length>42)comet.trail.shift();
-    comet.trail.forEach((p,i)=>{
-      const prog=i/comet.trail.length;
-      ctx.globalAlpha=prog*0.65;
-      ctx.beginPath();ctx.arc(p.x,p.y,1.3*prog,0,Math.PI*2);
-      ctx.fillStyle='#aaffcc';ctx.fill();
+    nebClouds.forEach(c => {
+        const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.rx);
+        g.addColorStop(0, `hsla(${c.hue},70%,15%,${c.a})`);
+        g.addColorStop(1, 'transparent');
+        ctx.save();
+        ctx.scale(1, c.ry / c.rx);
+        ctx.beginPath();
+        ctx.arc(c.x, c.y * (c.rx / c.ry), c.rx, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+        ctx.restore();
+        c.x += c.dx;
+        if (c.x > canvas.width + 120) c.x = -120;
+        if (c.x < -120) c.x = canvas.width + 120;
     });
-    ctx.globalAlpha=1;
-    ctx.beginPath();ctx.arc(comet.x,comet.y,2.2,0,Math.PI*2);
-    ctx.fillStyle='#fff';ctx.fill();
-    comet.x+=comet.vx;comet.y+=comet.vy;
-    if(comet.x>canvas.width+60||comet.x<-60||comet.y>canvas.height+60){
-      comet.active=false;
-      setTimeout(launchComet,5000+Math.random()*7000);
+
+    stars.forEach(s => {
+        s.a += s.da;
+        if (s.a <= 0.05 || s.a >= 1) s.da *= -1;
+        s.a = Math.max(0.05, Math.min(1, s.a));
+        ctx.globalAlpha = s.a;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.green ? '#00ff88' : '#fff';
+        ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    if (comet.active) {
+        comet.trail.push({ x: comet.x, y: comet.y });
+        if (comet.trail.length > 42) comet.trail.shift();
+        comet.trail.forEach((p, i) => {
+            const prog = i / comet.trail.length;
+            ctx.globalAlpha = prog * 0.65;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 1.3 * prog, 0, Math.PI * 2);
+            ctx.fillStyle = '#aaffcc';
+            ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+        ctx.beginPath();
+        ctx.arc(comet.x, comet.y, 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        comet.x += comet.vx;
+        comet.y += comet.vy;
+        if (comet.x > canvas.width + 60 || comet.x < -60 || comet.y > canvas.height + 60) {
+            comet.active = false;
+            setTimeout(launchComet, 5000 + Math.random() * 7000);
+        }
     }
-  }
-  ctx.globalAlpha=1;
-  requestAnimationFrame(draw);
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
 }
 draw();
 
-// ===== DATA =====
-const GITHUB_USERNAME = 'glassz13';
-const GITHUB_REPO = 'journal';
-const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main`;
-
+// ===== STATE =====
 let posts = [];
-let activeCategory = "Science";
+let activeCategory = 'Science';
 let currentArticleId = null;
+const allCategories = ['Science', 'Ideas', 'Society', 'Stories', 'Tech'];
 
-// ===== GITHUB API FUNCTIONS =====
-async function fetchPosts() {
-    try {
-        const response = await fetch(`${RAW_URL}/posts.json`);
-        if (!response.ok) {
-            if (response.status === 404) {
-                return getDefaultPosts();
-            }
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching posts:', error);
-        return getDefaultPosts();
+// ===== RENDER SIDEBAR =====
+function renderSidebar() {
+    const sidebar = document.getElementById('topicSidebar');
+    let html = `<div class="sidebar-label">topics</div>`;
+    allCategories.forEach(cat => {
+        const count = posts.filter(p => p.category === cat).length;
+        const activeClass = cat === activeCategory ? 'active' : '';
+        html += `<div class="topic ${activeClass}" onclick="switchCategory('${cat}')">${cat} <span class="topic-count">${count}</span></div>`;
+    });
+    sidebar.innerHTML = html;
+}
+
+// ===== RENDER ARTICLES =====
+function renderArticles() {
+    const container = document.getElementById('articlesContainer');
+    const filtered = posts.filter(p => p.category === activeCategory);
+    document.getElementById('contentLabel').textContent = `${activeCategory.toLowerCase()} — ${filtered.length} entries`;
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="font-family:monospace;font-size:12px;color:#333;padding:20px 0;">No logs in this dimension yet.</div>`;
+        return;
     }
+
+    container.innerHTML = filtered.map(p => `
+        <div class="article-card" onclick="openArticle('${p.id}')">
+            <div class="article-title">${p.title}</div>
+            <div class="article-meta"><span>${p.date}</span> · ${p.read_time}</div>
+        </div>
+    `).join('');
 }
 
-function getDefaultPosts() {
-    return [
-        {id: "1", title: "Why the universe is too quiet", category: "Science", date: "Jun 18", readTime: "6 min read", img: "", body: "The Fermi paradox remains one of the most haunting equations in modern astrophysics. If life is an inevitable statistical cosmic byproduct, the interstellar canvas shouldn't feel this empty..."},
-        {id: "2", title: "The strange math behind black hole information", category: "Science", date: "Jun 10", readTime: "9 min read", img: "", body: "Hawking radiation suggested information gets completely pulverized inside singularities. Yet modern quantum mechanics strongly resists information decay..."},
-        {id: "3", title: "Light has no experience of time", category: "Science", date: "May 29", readTime: "4 min read", img: "", body: "From the frame of reference of a traveling photon, creation and absorption happen simultaneously. Time stands perfectly still at $c$."}
-    ];
+// ===== SWITCH CATEGORY =====
+function switchCategory(cat) {
+    activeCategory = cat;
+    const url = new URL(window.location);
+    url.searchParams.set('category', cat);
+    window.history.pushState({}, '', url);
+    renderSidebar();
+    renderArticles();
 }
 
-// ===== UI FUNCTIONS =====
-function renderSidebar(){
-  const sidebar = document.getElementById('topicSidebar');
-  const categories = ["Science", "Ideas", "Society", "Stories", "Tech"];
-  
-  let html = `<div class="sidebar-label">topics</div>`;
-  categories.forEach(cat => {
-    const count = posts.filter(p => p.category === cat).length;
-    const activeClass = (cat === activeCategory) ? 'active' : '';
-    html += `<div class="topic ${activeClass}" onclick="switchCategory('${cat}')">${cat} <span class="topic-count">${count}</span></div>`;
-  });
-  sidebar.innerHTML = html;
+// ===== OPEN ARTICLE =====
+function openArticle(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+    currentArticleId = id;
+
+    const url = new URL(window.location);
+    url.searchParams.set('article', id);
+    window.history.pushState({}, '', url);
+
+    document.getElementById('dashboardView').style.display = 'none';
+    document.getElementById('readerView').style.display = 'block';
+
+    document.getElementById('readTitle').textContent = post.title;
+    document.getElementById('readCategory').textContent = post.category;
+    document.getElementById('readDate').textContent = post.date;
+    document.getElementById('readBody').textContent = post.content;
+
+    const imgEl = document.getElementById('readImg');
+    if (post.image_url && post.image_url.startsWith('http')) {
+        imgEl.src = post.image_url;
+        imgEl.style.display = 'block';
+    } else {
+        imgEl.style.display = 'none';
+    }
+    window.scrollTo(0, 0);
 }
 
-function renderArticles(){
-  const container = document.getElementById('articlesContainer');
-  const filtered = posts.filter(p => p.category === activeCategory);
-  document.getElementById('contentLabel').textContent = `${activeCategory.toLowerCase()} — ${filtered.length} entries`;
-  
-  if(filtered.length === 0){
-    container.innerHTML = `<div style="font-family:monospace;font-size:12px;color:#333;padding:20px 0;">No logs in this dimension yet.</div>`;
-    return;
-  }
-  
-  container.innerHTML = filtered.map(p => `
-    <div class="article-card" onclick="openArticle('${p.id}')">
-      <div class="article-title">${p.title}</div>
-      <div class="article-meta"><span>${p.date}</span> · ${p.readTime}</div>
-    </div>
-  `).join('');
+// ===== SHOW DASHBOARD =====
+function showDashboard() {
+    document.getElementById('readerView').style.display = 'none';
+    document.getElementById('dashboardView').style.display = 'block';
+    currentArticleId = null;
+    const url = new URL(window.location);
+    url.searchParams.delete('article');
+    window.history.pushState({}, '', url);
+    renderSidebar();
+    renderArticles();
 }
 
-function switchCategory(cat){
-  activeCategory = cat;
-  // Update URL without reload
-  const url = new URL(window.location);
-  url.searchParams.set('category', cat);
-  window.history.pushState({}, '', url);
-  renderSidebar();
-  renderArticles();
-}
+// ===== LOAD ARTICLES FROM SUPABASE =====
+async function loadArticles() {
+    try {
+        const { data, error } = await db
+            .from('posts')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-function openArticle(id){
-  const post = posts.find(p => p.id === id);
-  if(!post) return;
-  currentArticleId = id;
-  
-  // Update URL
-  const url = new URL(window.location);
-  url.searchParams.set('article', id);
-  window.history.pushState({}, '', url);
-  
-  document.getElementById('dashboardView').style.display = 'none';
-  const reader = document.getElementById('readerView');
-  reader.style.display = 'block';
-  
-  document.getElementById('readTitle').textContent = post.title;
-  document.getElementById('readCategory').textContent = post.category;
-  document.getElementById('readDate').textContent = post.date;
-  document.getElementById('readBody').textContent = post.body;
-  
-  const imgEl = document.getElementById('readImg');
-  if(post.img && post.img.startsWith('http')){
-    imgEl.src = post.img;
-    imgEl.style.display = 'block';
-  } else {
-    imgEl.style.display = 'none';
-  }
-  window.scrollTo(0,0);
-}
+        if (error) throw error;
 
-function showDashboard(){
-  document.getElementById('readerView').style.display = 'none';
-  document.getElementById('dashboardView').style.display = 'block';
-  currentArticleId = null;
-  // Remove article param from URL
-  const url = new URL(window.location);
-  url.searchParams.delete('article');
-  window.history.pushState({}, '', url);
-  renderSidebar();
-  renderArticles();
+        posts = data || [];
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get('article');
+        const category = urlParams.get('category');
+
+        if (category && allCategories.includes(category)) {
+            activeCategory = category;
+        }
+
+        renderSidebar();
+        renderArticles();
+        document.getElementById('dashboardView').style.display = 'block';
+
+        if (articleId) {
+            const post = posts.find(p => p.id === articleId);
+            if (post) openArticle(articleId);
+        }
+
+    } catch (error) {
+        console.error('Error loading articles:', error);
+        document.getElementById('articlesContainer').innerHTML =
+            `<div class="error-msg">⚠️ Error loading articles: ${error.message}</div>`;
+        document.getElementById('dashboardView').style.display = 'block';
+    }
 }
 
 // ===== NAVIGATION =====
 document.getElementById('backToHome').addEventListener('click', showDashboard);
 document.getElementById('navHome').addEventListener('click', showDashboard);
-document.getElementById('linkHome').addEventListener('click', showDashboard);
-document.getElementById('linkWriting').addEventListener('click', showDashboard);
+document.getElementById('linkHome').addEventListener('click', (e) => { e.preventDefault(); showDashboard(); });
 
-// ===== HANDLE BROWSER BACK/FORWARD =====
-window.addEventListener('popstate', function() {
+window.addEventListener('popstate', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const articleId = urlParams.get('article');
     const category = urlParams.get('category');
-    
     if (articleId) {
         const post = posts.find(p => p.id === articleId);
-        if (post) {
-            openArticle(articleId);
-        }
+        if (post) openArticle(articleId);
     } else {
-        if (category) {
-            activeCategory = category;
-        }
+        if (category && allCategories.includes(category)) activeCategory = category;
         showDashboard();
     }
 });
 
 // ===== INIT =====
-async function init() {
-    try {
-        document.getElementById('dashboardView').style.display = 'block';
-        posts = await fetchPosts();
-        
-        // Check URL for direct article
-        const urlParams = new URLSearchParams(window.location.search);
-        const articleId = urlParams.get('article');
-        const category = urlParams.get('category');
-        
-        if (category) {
-            activeCategory = category;
-        }
-        
-        renderSidebar();
-        renderArticles();
-        
-        // If article param exists, open it
-        if (articleId) {
-            setTimeout(() => {
-                const post = posts.find(p => p.id === articleId);
-                if (post) {
-                    openArticle(articleId);
-                }
-            }, 100);
-        }
-    } catch (error) {
-        console.error('Init error:', error);
-        document.getElementById('articlesContainer').innerHTML = 
-            `<div class="error-msg">⚠️ Error loading articles: ${error.message}</div>`;
-    }
-}
-
-init();
+loadArticles();
 </script>
 </body>
 </html>
