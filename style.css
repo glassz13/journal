@@ -172,10 +172,12 @@ canvas#bg {
     align-items: center;
 }
 
+/* Hover: Only text color changes */
 .topic:hover {
     color: #fff;
 }
 
+/* Active: Green line appears */
 .topic.active {
     color: #00ff88;
     border-left-color: #00ff88;
@@ -312,12 +314,11 @@ canvas#bg {
     margin-bottom: 20px;
 }
 
-/* FIX 1 — Title green in reader */
 .reader-header h1 {
     font-size: 24px;
     font-weight: normal;
     margin-bottom: 10px;
-    color: #00ff88;
+    color: #fff;
 }
 
 .reader-meta {
@@ -333,17 +334,14 @@ canvas#bg {
     color: #00ff88;
 }
 
-/* FIX 2 — Image smaller */
 .reader-img {
-    width: 80%;
-    max-height: 220px;
+    width: 100%;
+    max-height: 320px;
     object-fit: cover;
     border: 0.5px solid #1a1a1a;
     border-radius: 4px;
     margin-bottom: 24px;
     display: none;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .reader-body {
@@ -379,12 +377,12 @@ canvas#bg {
     color: #ff4444;
 }
 
-/* FIX 3 — Editor background transparent so stars show */
+/* ===== ADMIN EDITOR - CENTERED ===== */
 .editor-view {
     display: none;
     position: fixed;
     inset: 0;
-    background: transparent;
+    background: #030905;
     z-index: 100;
     flex-direction: column;
     padding: 30px 40px;
@@ -474,7 +472,6 @@ canvas#bg {
     min-height: 0;
     padding: 10px 0;
     width: 100%;
-    overflow: hidden;
 }
 
 .editor-textarea-container {
@@ -482,8 +479,6 @@ canvas#bg {
     max-width: 800px;
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-height: 0;
 }
 
 .editor-content-label {
@@ -496,29 +491,27 @@ canvas#bg {
     text-align: left;
 }
 
-/* FIX 4 — Textarea proper boundary and scroll */
+/* No green focus effect */
 .editor-textarea {
     width: 100%;
-    flex: 1;
-    min-height: 0;
-    height: calc(100vh - 280px);
-    max-height: calc(100vh - 280px);
-    background: rgba(0, 0, 0, 0.85);
+    height: 450px;
+    background: transparent;
     border: 0.5px solid #0a2a12;
     border-radius: 6px;
     color: #00dd66;
     font-family: monospace;
     font-size: 14px;
     line-height: 1.8;
-    resize: none;
+    resize: vertical;
     outline: none;
     padding: 20px;
-    overflow-y: auto;
+    transition: height 0.2s;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
 }
 
+/* Focus: No color change! */
 .editor-textarea:focus {
     border-color: #0a2a12;
 }
@@ -643,73 +636,73 @@ canvas#bg {
     .main {
         grid-template-columns: 1fr;
     }
-
+    
     .sidebar {
         border-right: none;
         border-bottom: 0.5px solid #0a1a0a;
+        padding: 10px 0;
         display: flex;
         flex-wrap: wrap;
         gap: 4px;
         padding: 10px 12px;
     }
-
+    
     .sidebar-label {
         width: 100%;
         padding: 0 0 6px 0;
     }
-
+    
     .topic {
         padding: 4px 12px;
         border-left: none;
         border-bottom: 2px solid transparent;
         font-size: 11px;
     }
-
+    
     .topic.active {
         border-left: none;
         border-bottom-color: #00ff88;
     }
-
+    
     .hero {
         flex-direction: column;
         text-align: center;
         padding: 20px;
     }
-
+    
     .hero-text p {
         max-width: 100%;
     }
-
+    
     .content {
         padding: 16px;
     }
-
+    
     .editor-view {
         padding: 16px;
     }
-
+    
     .editor-header {
         flex-direction: column;
         gap: 12px;
     }
-
+    
     .editor-meta-selects {
         margin-left: 0;
         width: 100%;
         flex-wrap: wrap;
     }
-
+    
     .editor-title-input {
         font-size: 18px;
     }
-
+    
     .editor-textarea {
-        height: calc(100vh - 320px);
-        max-height: calc(100vh - 320px);
+        height: 300px;
         font-size: 13px;
         padding: 14px;
     }
-
+    
     .toast {
         bottom: 16px;
         right: 16px;
