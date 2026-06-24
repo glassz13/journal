@@ -291,7 +291,14 @@ draw();
 // ===== GITHUB CONFIG =====
 const GITHUB_USERNAME = 'glassz13';
 const GITHUB_REPO = 'journal';
-const GITHUB_TOKEN = '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';  // ← REPLACE WITH YOUR TOKEN
+// In admin.html, use this instead of hardcoding:
+let GITHUB_TOKEN = sessionStorage.getItem('github_token');
+if (!GITHUB_TOKEN) {
+    GITHUB_TOKEN = prompt('Enter your GitHub token:');
+    if (GITHUB_TOKEN) {
+        sessionStorage.setItem('github_token', GITHUB_TOKEN);
+    }
+}
 const API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents`;
 const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main`;
 
