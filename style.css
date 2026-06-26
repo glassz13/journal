@@ -347,7 +347,7 @@ canvas#bg {
 .reader-body {
     font-size: 15px;
     line-height: 1.75;
-    color: #ccc;
+    color: #fff;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word;
